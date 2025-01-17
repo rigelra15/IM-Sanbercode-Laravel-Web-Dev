@@ -1,0 +1,93 @@
+RIGEL RAMADHANI WALONI - BATCH 63 - TUGAS 10 LARAVEL
+-----------------------
+Sebelum memulai, kita akses terlebih dahulu shell/cmd untuk ke mysqlnya. Kita menggunakan root user.
+1. Buka XAMPP Control Panel
+2. Start Apache dan MySQL, tunggu hingga benar-benar berjalan
+3. Jika sudah berjalan, klik Shell di sisi kanan
+4. Ketik `mysql -u root -p` dan tekan enter, kemudian bila ditanya password, langsung tekan enter saja.
+mysql sudah siap digunakan! [ss-1.png]
+
+-----------------------
+1. Membuat Database -- [ss-2.png]
+"CREATE DATABASE myshop;"
+"USE myshop;" -> untuk masuk ke db myshop
+
+
+2. Membuat Table di Dalam Database -- [ss-3a.png]
+a. Table users
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    email VARCHAR(255),
+    password VARCHAR(255)
+);
+b. Table categories
+CREATE TABLE categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255)
+);
+c. Table items
+CREATE TABLE items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    description VARCHAR(255),
+    price INT,
+    stock INT,
+    category_id INT,
+    FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+Untuk cek daftar tabel, gunakan perintah "SHOW TABLES;" -- [ss-3b.png]
+
+
+3. Memasukkan Data pada Table -- [ss-4.png]
+a. users
+INSERT INTO users (name, email, password) VALUES
+('John Doe', 'john@doe.com', 'john123'),
+('Jane Doe', 'jane@doe.com', 'jenita123');
+
+b. categories
+INSERT INTO categories (name) VALUES
+('gadget'),
+('cloth'),
+('men'),
+('women'),
+('branded');
+
+c. items
+INSERT INTO items (name, description, price, stock, category_id) VALUES
+('Sumsang b50', 'hape keren dari merek sumsang', 4000000, 100, 1),
+('Uniklooh', 'baju keren dari brand ternama', 500000, 50, 2),
+('IMHO Watch', 'jam tangan anak yang jujur banget', 2000000, 10, 1);
+
+
+4. Mengambil Data dari Database -- [ss-5.png]
+a. Mengambil data users
+SELECT id, name, email FROM users;
+
+b. Mengambil data items
+--> 1. Mendapatkan data item dengan harga di atas 1 juta:
+SELECT * FROM items WHERE price > 1000000;
+--> 2. Mengambil data item dengan nama mirip kata kunci tertentu:
+SELECT * FROM items WHERE name LIKE '%watch%';
+
+c. Menampilkan data items join dengan kategori
+SELECT 
+    items.name AS name,
+    items.description AS description,
+    items.price AS price,
+    items.stock AS stock,
+    items.category_id AS category_id,
+    categories.name AS kategori
+FROM items
+JOIN categories ON items.category_id = categories.id;
+
+
+5. Mengubah Data dari Database -- [ss-6.png]
+UPDATE items
+SET price = 2500000
+WHERE name = 'Sumsang b50';
+
+Periksa jika sudah berubah datanya dengan cara --> SELECT * FROM items WHERE name = 'Sumsang b50';
+
+
+==> Sebagai bukti bahwa sintaks berhasil dijalankan, terdapat folder "screenshots" yang dilampirkan 
